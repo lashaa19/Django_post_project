@@ -1,0 +1,46 @@
+{% extends 'parts/base_main.html' %}
+
+{% block title %}
+Create Post
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <div class="header">
+        <div class="header-left">
+            <h3>Create post</h3>
+        </div>
+
+        <div class="header-center">
+            <a href="/">All posts</a>
+        </div>
+
+        <div class="header-right">
+            <a href="/logout/">Logout</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h4>New post</h4>
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <textarea name="text" placeholder="Write your post here..."></textarea>
+
+            <div class="actions">
+                <a href="/" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Publish</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
