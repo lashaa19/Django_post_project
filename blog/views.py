@@ -1,6 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Post
+
+user = get_user_model()
 
 def main(request):
     context = {
@@ -11,8 +14,17 @@ def main(request):
 def user_posts(request, userid):
     context = {
         'posts': Post.objects.filter(author_id=userid).order_by("-pk"),
+        'username': user.objects.get(id=userid).username
     }
     return  render(request, 'main.html', context)
+
+def view_post(request, postid):
+    posts = Post.objects.filter(pk=postid)
+    post = posts.first() if posts else None
+    context = {
+        'post': post,
+    }
+    return  render(request, 'post.html', context)
 
 @login_required()
 def create_post(request):

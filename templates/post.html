@@ -1,7 +1,11 @@
 {% extends 'parts/base_main.html' %}
 
 {% block title %}
-All posts
+{% if post %}
+    Post by {{ post.author.username }}
+{% else %}
+Post not found
+{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -12,28 +16,22 @@ All posts
             <a href="/user/create_post">Create Post</a>
             <a href="/logout/">Logout</a>
         {% else %}
-            <a href="/main/">Main</a>
+            <a href="/Main/">Main</a>
             <a href="/login/">Login</a>
             <a href="/logout/">Logout</a>
         {% endif %}
     </div>
 
-{% if username %}
-<div class="deader">
-    <h2>PageL {{ username }}</h2>
-    <h2>Count of posts: {{ posts.count }}</h2>
-</div>
-{% endif %}
-
-    {% for post in posts %}
-        <div class="post">
+{% if post %}
+     <div class="post">
             <div class="post-author"><a href="/user/{{post.author.pk}}">{{ post.author.username }}</a></div>
             <div class="post-text">{{ post.text }}</div>
-            <a class="post-date" href="/post/{{post.pk}}">Read more</a>
             <div class="post-date">{{ post.time_date }}</div>
-
         </div>
-{% endfor %}
-
+{% else %}
+    <div class="empty">
+        Post not found
+    </div>
+{% endif %}
 {% endblock %}
 
