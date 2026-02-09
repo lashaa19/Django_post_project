@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Post, Comment, PostLike
+from .models import Post, Comment, PostLike, CommentLike
 
 user = get_user_model()
 
@@ -52,6 +52,18 @@ def post_like(request, postid):
             PostLike.objects.create(post=post, author=request.user)  # поставить лайк
 
     return redirect(f"/post/{postid}")
+
+def comment_like(request, commentid):
+    comment = Comment.objects.filter(pk=commentid).first()
+    if comment and request.method == "POST":
+        like = CommentLike.objects.filter(comment=comment, author=request.user)
+
+        if like.exists():
+            like.delete()   # снять лайк
+        else:
+            CommentLike.objects.create(comment=comment, author=request.user)  # поставить лайк
+
+    return redirect(f"/post/{comment.post.pk}#comment-{comment.pk}")
 
 
 @login_required()
