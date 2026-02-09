@@ -139,14 +139,13 @@
             box-shadow: 0 12px 30px rgba(0,0,0,0.5);
         }
 
-        /* comments: чуть “внутреннее”, но в той же стилистике */
         .comment {
             background: rgba(15, 17, 21, 0.35);
             border: 1px solid #2a2f3a;
             border-radius: 12px;
             padding: 14px;
             margin-top: 12px;
-            box-shadow: none; /* чтобы не было одинаково “тяжело” как post */
+            box-shadow: none;
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
@@ -174,12 +173,29 @@
             color: #8b8f9b;
         }
 
-        /* comment input */
+        .post-banner {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+
+            box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-banner:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+        }
+
         .comment-form {
             display: flex;
             gap: 12px;
             align-items: stretch;
-            margin-bottom: 14px; /* чтобы отделить от списка комментариев */
+            margin-bottom: 14px;
         }
 
         .comment-form .comment {

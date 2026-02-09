@@ -19,6 +19,8 @@ from django.urls import path, include
 
 from blog.views import create_post
 from .views import logout, login, register
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +29,7 @@ urlpatterns = [
     path('register/', register),
     path('logout/', logout),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

@@ -7,9 +7,12 @@ class Post(models.Model):
     text = models.TextField()
     author = models.ForeignKey(user_model, on_delete=models.CASCADE)
     time_date = models.DateTimeField(auto_now_add=True)
+    banner = models.ImageField(default='fallback.png', blank=True)
 
     def likes_count(self):
         return PostLike.objects.filter(post=self).count()
+
+
 
 
 class Comment(models.Model):

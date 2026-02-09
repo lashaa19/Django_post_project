@@ -24,34 +24,39 @@ Post not found
 
 {% if post %}
 
-    <div class="post">
-        <div class="post-author">
-            <a href="/user/{{ post.author.pk }}">{{ post.author.username }}</a>
-        </div>
+<div class="post">
 
-        <div class="post-text">
-            {{ post.text }}
-        </div>
-
-        <div class="post-date">
-            {{ post.created_at }}
-        </div>
-
-        <!-- LIKE INSIDE POST -->
-        <div class="post-actions">
-            <form method="post" action="/post/{{ post.pk }}/like/" class="like-form">
-                {% csrf_token %}
-                <button type="submit" class="like-btn {% if user_liked %}liked{% endif %}">
-                    ❤️ Like
-                </button>
-
-                <span class="like-count">
-                    {{ post.likes.count }} likes
-                </span>
-            </form>
-        </div>
+    <div class="post-author">
+        <a href="/user/{{ post.author.pk }}">{{ post.author.username }}</a>
     </div>
 
+    <div class="post-text">
+        {{ post.text }}
+    </div>
+
+    {% if post.banner %}
+        <img src="{{ post.banner.url }}" class="post-banner">
+    {% endif %}
+
+    <div class="post-date">
+        {{ post.created_at }}
+    </div>
+
+    <!-- LIKE -->
+    <div class="post-actions">
+        <form method="post" action="/post/{{ post.pk }}/like/" class="like-form">
+            {% csrf_token %}
+            <button type="submit" class="like-btn {% if user_liked %}liked{% endif %}">
+                ❤️ Like
+            </button>
+
+            <span class="like-count">
+                {{ post.likes.count }} likes
+            </span>
+        </form>
+    </div>
+
+</div>
 
 <!-- COMMENT BLOCK -->
 <div class="post">
