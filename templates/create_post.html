@@ -24,7 +24,7 @@ Create Post
     <div class="card">
         <h4>New post</h4>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             {% if error %}
@@ -34,7 +34,7 @@ Create Post
             {% endif %}
 
             <textarea name="text" placeholder="Write your post here..."></textarea>
-
+            <input type="file" name="file">
             <div class="actions">
                 <a href="/" class="btn btn-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">Publish</button>

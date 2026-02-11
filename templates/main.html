@@ -18,9 +18,16 @@ All posts
         {% endif %}
     </div>
 
-{% if username %}
-<div class="deader">
-    <h2>PageL {{ username }}</h2>
+{% if page_user %}
+<div class="header">
+    <h2>PageL {{ page_user.username }}</h2>
+    {% if request.user.pk != page_user.pk %}
+        {% if subscribed %}
+            <a href="/user/{{ page_user.pk }}/subscribe/">Unsubscribe</a>
+        {% else %}
+            <a href="/user/{{ page_user.pk }}/subscribe/">Subscribe</a>
+        {% endif %}
+    {% endif %}
     <h2>Count of posts: {{ posts.count }}</h2>
 </div>
 {% endif %}
@@ -28,6 +35,9 @@ All posts
     {% for post in posts %}
         <div class="post">
             <div class="post-author"><a href="/user/{{post.author.pk}}">{{ post.author.username }}</a></div>
+            {% if post.file %}
+                <img src="{{ post.file.url }}" alt="" width="60%">
+            {% endif %}
             <div class="post-text">{{ post.text }}</div>
             <a class="post-date" href="/post/{{post.pk}}">Read more</a>
             <div class="post-date">{{ post.time_date }}</div>

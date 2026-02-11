@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Post, Comment, PostLike, CommentLike
+from .models import Post, Comment, PostLike, CommentLike, Subscriptions
 
 user = get_user_model()
 
@@ -13,11 +13,30 @@ def main(request):
     return  render(request, 'main.html', context)
 
 def user_posts(request, userid):
+    sub = Subscriptions.objects.filter(page_user_id=userid, follower=request.user)
     context = {
         'posts': Post.objects.filter(author_id=userid).order_by("-pk"),
-        'username': user.objects.get(id=userid).username
+        'page_user': user.objects.get(id=userid),
+        'subscribed': sub
     }
     return  render(request, 'main.html', context)
+
+def subscribe(request, userid):
+    page_user = user.objects.filter(pk=userid)
+    if page_user:
+        return redirect("/")
+
+    referer = request.META.get("HTTP_REFERER")   ###### here 02:05
+    page_user = page_user.first()
+
+    active_subscription = Subscriptions.objects.filter(page_user=page_user, follower=request.user)
+
+    if active_subscription:
+        active_subscription.delete()
+    else:
+        Subscriptions.objects.create(page_user=page_user, follower=request.user)
+
+    return  redirect(referer)
 
 def view_post(request, postid):
     posts = Post.objects.filter(pk=postid)
@@ -31,14 +50,13 @@ def view_post(request, postid):
 
 def post_comment(request, postid):
     post = Post.objects.filter(pk=postid).first()
+    print(request.POST)
+    print(request.FILES)
     if post and request.method == "POST":
         text = (request.POST.get("text") or "").strip()
+        file = request.FILES.get("file_upload", None)
         if text:
-            Comment.objects.create(
-                post=post,
-                author=request.user,
-                text=text
-            )
+            Comment.objects.create(post=post, author=request.user, text=text,file=file)
     return redirect(f"/post/{postid}")
 
 def post_like(request, postid):
@@ -69,9 +87,12 @@ def comment_like(request, commentid):
 @login_required()
 def create_post(request):
     if request.method == "POST":
+        print(request.POST)
+        print(request.FILES)
         text = request.POST.get("text")
+        file = request.FILES.get("file", None)
         if text:
-            Post.objects.create(text=text, author=request.user)
+            Post.objects.create(text=text, file=file, author=request.user)
             return redirect("/")
         return render(request, 'create_post.html', context={"error": "No text detected"})
     return  render(request, 'create_post.html',)
