@@ -12,6 +12,9 @@ class Post(models.Model):
     def likes_count(self):
         return PostLike.objects.filter(post=self).count()
 
+    def __str__(self):
+        return f"{self.author} | {self.text[:20]}"
+
 class Subscriptions(models.Model):
     page_user = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name="followers")
     follower = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name="subscriptions")
