@@ -18,6 +18,21 @@ All posts
         {% endif %}
     </div>
 
+{% if user.is_authenticated and unviewed_post %}
+    <div class="unviewed-box">
+        <div class="unviewed-title">👀 New posts from subscriptions</div>
+        <div class="unviewed-subtitle">Only posts you haven’t opened yet</div>
+
+        <div class="unviewed-list">
+            {% for unviewed_post in unviewed_post %}
+                <a class="unviewed-item" href="/post/{{ unviewed_post.pk }}">
+                    {{ unviewed_post.text|truncatechars:80 }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
 {% if page_user %}
 <div class="header">
     <h2>PageL {{ page_user.username }}</h2>

@@ -62,10 +62,18 @@ Post not found
 <div class="post">
 
     <form method="post" action="/post/{{ post.pk }}/comment/" class="comment-form" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="text" class="comment" name="text" placeholder="Write your comment here...">
-        <input type="file" name="file_upload">
-        <button type="submit" class="btn">Comment</button>
+    {% csrf_token %}
+
+    <input type="text" class="comment" name="text" placeholder="Write your comment here...">
+
+    <label class="attach-btn">
+        📎 Attach
+        <input type="file" name="file_upload" class="file-hidden">
+    </label>
+
+    <span class="file-name"></span>
+
+    <button type="submit" class="btn">Comment</button>
     </form>
 
     {% for comment in comments %}

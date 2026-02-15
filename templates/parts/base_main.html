@@ -124,6 +124,57 @@
             margin-bottom: 16px;
         }
 
+        .unviewed-box{
+            background: #161a22;
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        .unviewed-title{
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+
+        .unviewed-subtitle{
+            font-size: 12px;
+            color: #8b8f9b;
+            margin-top: -6px;
+            margin-bottom: 14px;
+        }
+
+        .unviewed-list{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .unviewed-item{
+            display: block;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #2a2f3a;
+            background: rgba(15, 17, 21, 0.35);
+            color: #e6e6e6;
+            font-weight: 500;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .unviewed-item:hover{
+            transform: translateY(-1px);
+            border-color: rgba(122,162,255,0.35);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+            text-decoration: none; /* чтобы не включалось underline из глобального a:hover */
+        }
+
+        .unviewed-item:active{
+            transform: translateY(0px);
+        }
+
         /* post */
         .post {
             background: #161a22;
@@ -147,6 +198,47 @@
             margin-top: 12px;
             box-shadow: none;
             transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .file-hidden{
+            display:none;
+        }
+
+        /* attach button */
+        .attach-btn{
+            height:44px;
+            padding:0 16px;
+            display:flex;
+            align-items:center;
+            border-radius:12px;
+            border:1px solid #2a2f3a;
+            background:#161a22;
+            color:#e6e6e6;
+            font-weight:600;
+            cursor:pointer;
+            transition:all 0.2s ease;
+            white-space:nowrap;
+        }
+
+        .attach-btn:hover{
+            border-color:#7aa2ff;
+            color:#7aa2ff;
+            background:rgba(122,162,255,0.08);
+        }
+
+        .attach-btn:active{
+            transform:translateY(1px);
+        }
+
+        /* filename text */
+        .file-name{
+            font-size:12px;
+            color:#8b8f9b;
+            align-self:center;
+            max-width:140px;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
         }
 
         .comment:hover {

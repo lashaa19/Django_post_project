@@ -2,13 +2,23 @@ from django.contrib.auth import get_user_model
 from django.http import request
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Post, Comment, PostLike, CommentLike, Subscriptions
+from .models import Post, Comment, PostLike, CommentLike, Subscriptions, Views
+from django.shortcuts import redirect, get_object_or_404
 
 user = get_user_model()
 
 def main(request):
+    all_sub = Subscriptions.objects.filter(follower=request.user)
+    unviewed_posts = []
+    for sub in all_sub:
+        sub_posts = Post.objects.filter(author=sub.page_user)
+        for sub_post in sub_posts:
+            if not Views.objects.filter(post = sub_post, follower=request.user).exists():
+                unviewed_posts.append(sub_post)
+
     context = {
         'posts': Post.objects.all().order_by("-pk"),
+        'unviewed_post': unviewed_posts,
     }
     return  render(request, 'main.html', context)
 
@@ -22,12 +32,10 @@ def user_posts(request, userid):
     return  render(request, 'main.html', context)
 
 def subscribe(request, userid):
-    page_user = user.objects.filter(pk=userid)
-    if page_user:
-        return redirect("/")
+    page_user = get_object_or_404(user, pk=userid)
 
-    referer = request.META.get("HTTP_REFERER")   ###### here 02:05
-    page_user = page_user.first()
+    if request.user.pk == page_user.pk:
+        return redirect(f"/user/{userid}")
 
     active_subscription = Subscriptions.objects.filter(page_user=page_user, follower=request.user)
 
@@ -36,17 +44,20 @@ def subscribe(request, userid):
     else:
         Subscriptions.objects.create(page_user=page_user, follower=request.user)
 
-    return  redirect(referer)
+    return redirect(request.META.get("HTTP_REFERER", f"/user/{userid}"))
 
 def view_post(request, postid):
-    posts = Post.objects.filter(pk=postid)
-    post = posts.first() if posts else None
+    post = get_object_or_404(Post, pk=postid)
+
+    if request.user.is_authenticated:
+        Views.objects.get_or_create(post=post, follower=request.user)
+
     context = {
         'post': post,
-        'comments':Comment.objects.filter(post=post).order_by("-pk"),
+        'comments': Comment.objects.filter(post=post).order_by("-pk"),
         'user_liked': PostLike.objects.filter(post=post, author=request.user).exists()
     }
-    return  render(request, 'post.html', context)
+    return render(request, 'post.html', context)
 
 def post_comment(request, postid):
     post = Post.objects.filter(pk=postid).first()

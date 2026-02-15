@@ -13,8 +13,12 @@ class Post(models.Model):
         return PostLike.objects.filter(post=self).count()
 
 class Subscriptions(models.Model):
-    page_user = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="followers")
+    page_user = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name="followers")
     follower = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name="subscriptions")
+
+class Views(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="views")
+    follower = models.ForeignKey(user_model, on_delete=models.CASCADE, related_name="post_views")
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
