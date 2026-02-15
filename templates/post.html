@@ -35,8 +35,25 @@ Post not found
     </div>
 
     {% if post.file %}
-        <img src="{{ post.file.url }}" alt="" width="80%">
+
+    {% with post.file.url|lower as url %}
+
+        {% if ".mp4" in url or ".webm" in url or ".mov" in url %}
+
+                <video controls width="80%" class="post-media">
+                    <source src="{{ post.file.url }}">
+                </video>
+
+            {% else %}
+
+                <img src="{{ post.file.url }}" class="post-media">
+
+            {% endif %}
+
+        {% endwith %}
+
     {% endif %}
+
 
     <div class="post-date">
         {{ post.created_at }}
@@ -68,7 +85,10 @@ Post not found
 
     <label class="attach-btn">
         📎 Attach
-        <input type="file" name="file_upload" class="file-hidden">
+        <input type="file"
+               name="file_upload"
+               class="file-hidden"
+               accept="image/*,video/*">
     </label>
 
     <span class="file-name"></span>
@@ -87,8 +107,16 @@ Post not found
 
             <div class="post-text">
                 {{ comment.text }}
-                {% if post.file %}
-                    <img src="{{ post.file.url }}" alt="" width="60%">
+                {% if comment.file %}
+                    {% with comment.file.url|lower as url %}
+                        {% if ".mp4" in url or ".webm" in url or ".mov" in url %}
+                            <video controls width="60%" class="post-media">
+                                <source src="{{ comment.file.url }}">
+                            </video>
+                        {% else %}
+                            <img src="{{ comment.file.url }}" alt="" width="60%" class="post-media">
+                        {% endif %}
+                    {% endwith %}
                 {% endif %}
             </div>
 

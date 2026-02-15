@@ -25,7 +25,7 @@ class Comment(models.Model):
     author = models.ForeignKey(user_model, on_delete=models.CASCADE)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    file = models.FileField(upload_to="comment_pic/", blank=True, null=True)
+    file = models.FileField(upload_to='posts/', null=True, blank=True)
 
     def likes_count(self):
         return CommentLike.objects.filter(comment=self).count()

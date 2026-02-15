@@ -204,6 +204,33 @@
             display:none;
         }
 
+        .post-media{
+            width: 100%;
+            max-width: 100%;
+            max-height: 420px;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            background: #0f1115;
+            border: 1px solid #2a2f3a;
+            object-fit: cover;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+        }
+
+        /* video specifics */
+        video.post-media{
+            height: auto;
+            object-fit: contain; /* чтобы видео не обрезалось */
+        }
+
+        /* optional: hover like your banners */
+        .post-media:hover{
+            transform: scale(1.01);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
         /* attach button */
         .attach-btn{
             height:44px;
